@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, make_response
 from flask_restful import Resource
 from scripts.db_connection import DB_connection
 
@@ -12,7 +12,8 @@ class Delete(Resource):
                 return {"msg": "Invalid Parameters"}
             data = DB_connection().delete_query(id_s)
             if data == None:
-                return {"msg": "Invalid given Employee ID"}
+                msg = {"msg": "Invalid given Employee ID"}
+                return make_response(msg, 403)
         except:
             return {"msg": "Invalid given Arguments",
                     "Valid fields" : "employee_id"}

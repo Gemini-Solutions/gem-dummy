@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, make_response
 from flask_restful import Resource
 from scripts.db_connection import DB_connection
 
@@ -15,8 +15,9 @@ class Put(Resource):
             if data == None:
                 return {"msg": "Invalid given Employee ID"}
         except:
-            return {"msg": "Invalid given Arguments",
+            msg = {"msg": "Invalid given Arguments",
                     "Valid fields" : "employee_id, experience"}
+            return make_response(msg, 403)
         return {
             "msg" : "Updated Successfuly",
             "Updated data" : data

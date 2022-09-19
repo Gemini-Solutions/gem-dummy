@@ -1,5 +1,5 @@
 # import requests
-from flask import request
+from flask import request, make_response
 from flask_restful import Resource
 # from scripts.post import req
 # from scripts.connection import Connection
@@ -12,10 +12,12 @@ class Get(Resource):
         try:
             par = request.args.get("id")
             if par == None:
-                return {"msg": "Invalid Parameters"}
+                msg =  {"msg": "Invalid Parameters"}
+                return make_response(msg, 403)
             data = DB_connection().find_query(par)
             if data == None:
-                return {"msg": "Data Not available for the given id"}
+                msg = {"msg": "Data Not available for the given id"}
+                return make_response(msg, 403)
             return {"status": "Successful",
                     "Data": data}
         except:
