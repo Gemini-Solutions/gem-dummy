@@ -7,8 +7,9 @@ class Put(Resource):
     @classmethod
     def put(cls):
         try:
+            par = request.args.get("id")
             req = request.get_json()
-            exp, id_s = req["experience"],req["employee id"]
+            exp, id_s = req["experience"], par
             if exp == None or id_s == None:
                 return {"msg": "Invalid Parameters"}
             data = DB_connection().update_query(id_s,exp)
