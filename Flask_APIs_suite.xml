@@ -1,0 +1,169 @@
+<data>
+<suite>
+        <project>GEMECO-API-PY</project>
+        <report_name>Automation_Flask_dummy_APIs</report_name>
+        <mode>optimize</mode>
+        <bridge_token>aac159ed-cb6d-4c2e-9ab7-c113c2745fbb1665750796736</bridge_token>
+        <username>tanya.agarwal</username>
+        <report_info>Flask Dummy APIs Automation</report_info>
+        <local>http://127.0.0.1:50000</local>
+        <env>local</env>
+</suite>
+<testcases>
+
+    <testcase>
+        <name>insert_details_of_employee_success</name>
+        <category>POST APIs</category>
+        <run_flag>Y</run_flag>
+        <api>/test/v1/post</api>
+        <method>POST</method>
+        <body>{
+            "employee_id":"10",
+            "employee_name":"tanya",
+            "company":"gemini",
+            "experience": 10}
+        </body>
+        <headers>{"Content-Type": "application/json"}</headers>
+        <expected_status_code>200</expected_status_code>
+        <authentication></authentication>
+        <pre_variables>set $[#SUITE.employee_id]=10;set $[#SUITE.experience]=$[#getRandomFromAlist([5,7])];</pre_variables>
+        <post_assertion></post_assertion>
+        <after_file>path=tests.configTest.BeforeAfterFile,class=beforeAfter,method=after_</after_file>
+        <debug_mode>false</debug_mode>
+        <report_misc></report_misc>
+        <TYPE>PYPREST</TYPE>
+    </testcase>
+
+    <testcase>
+        <name>insert_details_of_employee_failed</name>
+        <category>POST APIs</category>
+        <run_flag>Y</run_flag>
+        <api>/test/v1/post</api>
+        <method>POST</method>
+        <body>{
+            "employee_id":"",
+            "employee_name":"tanya",
+            "company":"gemini",
+            "experience":20}
+        </body>
+        <headers>{"Content-Type": "application/json"}</headers>
+        <expected_status_code>400,403</expected_status_code>
+        <authentication></authentication>
+        <pre_variables>set $[#SUITE.experience]=$[#getRandomFromAlist([5,7])]</pre_variables>
+        <post_assertion></post_assertion>
+        <after_file>path=tests.configTest.BeforeAfterFile,class=beforeAfter,method=after_</after_file>
+        <debug_mode>false</debug_mode>
+        <report_misc></report_misc>
+        <TYPE>PYPREST</TYPE>
+    </testcase>
+
+
+    <testcase>
+        <name>get_details_of_employee_success</name>
+        <category>GET APIs</category>
+        <run_flag>Y</run_flag>
+        <api>/test/v1/get?id=$[#SUITE.id]</api>
+        <method>GET</method>
+        <body>{}</body>
+        <headers>{}</headers>
+        <expected_status_code>200</expected_status_code>
+        <authentication></authentication>
+        <pre_variables>set $[#SUITE.id]=10</pre_variables>
+        <post_assertion>compare response.status to 'Successful'</post_assertion>
+        <debug_mode>false</debug_mode>
+        <report_misc></report_misc>
+        <TYPE>PYPREST</TYPE>
+    </testcase>
+
+    <testcase>
+        <name>get_details_of_employee_failed</name>
+        <category>GET APIs</category>
+        <run_flag>Y</run_flag>
+        <api>/test/v1/get?id=$[#SUITE.id]</api>
+        <method>GET</method>
+        <body>{}</body>
+        <headers>{}</headers>
+        <expected_status_code>400,403</expected_status_code>
+        <authentication></authentication>
+        <pre_variables>set $[#SUITE.id]=$[#rand(20,50)]</pre_variables>
+        <post_assertion>compare response.msg to 'Data Not available for the given id'</post_assertion>
+        <debug_mode>false</debug_mode>
+        <report_misc></report_misc>
+        <TYPE>PYPREST</TYPE>
+    </testcase>
+
+    <testcase>
+        <name>update_details_of_employee_success</name>
+        <category>PUT APIs</category>
+        <run_flag>Y</run_flag>
+        <api>/test/v1/put?id=$[#SUITE.id]</api>
+        <method>PUT</method>
+        <before_file>path=tests.configTest.BeforeAfterFile,class=beforeAfter,method=before_</before_file>
+        <body>{}</body>
+        <headers>{"Content-Type": "application/json"}</headers>
+        <expected_status_code>200</expected_status_code>
+        <authentication></authentication>
+        <pre_variables>set $[#SUITE.id]=10;set $[#SUITE.experience]=$[#getRandomFromAlist([5,7])]</pre_variables>
+        <post_assertion>compare response.msg to 'Updated Successfuly'</post_assertion>
+        <debug_mode>false</debug_mode>
+        <report_misc></report_misc>
+        <TYPE>PYPREST</TYPE>
+    </testcase>
+
+    <testcase>
+        <name>update_details_of_employee_failed</name>
+        <category>PUT APIs</category>
+        <run_flag>Y</run_flag>
+        <api>/test/v1/put?id=$[#SUITE.employee_id]</api>
+        <method>PUT</method>
+        <before_file>path=tests.configTest.BeforeAfterFile,class=beforeAfter,method=before_</before_file>
+        <body>{}</body>
+        <headers>{"Content-Type": "application/json"}</headers>
+        <expected_status_code>400,403</expected_status_code>
+        <authentication></authentication>
+        <pre_variables>set $[#SUITE.employee_id]=$[#rand(20,50)];set $[#SUITE.experience]=$[#getRandomFromAlist([5,7])]</pre_variables>
+        <post_assertion>compare response.msg to 'Invalid given Employee ID'</post_assertion>
+        <debug_mode>false</debug_mode>
+        <report_misc></report_misc>
+        <TYPE>PYPREST</TYPE>
+    </testcase>
+
+
+    <testcase>
+        <name>delete_of_employee_details_success</name>
+        <category>Delete APIs</category>
+        <run_flag>Y</run_flag>
+        <api>/test/v1/delete?id=$[#SUITE.id]</api>
+        <method>DELETE</method>
+        <body>{}</body>
+        <headers>{"Content-Type": "application/json"}</headers>
+        <expected_status_code>200</expected_status_code>
+        <authentication></authentication>
+        <pre_variables>set $[#SUITE.id]=10</pre_variables>
+        <post_assertion>compare response.msg to 'Deleted Successfuly'</post_assertion>
+        <debug_mode>false</debug_mode>
+        <report_misc></report_misc>
+        <TYPE>PYPREST</TYPE>
+    </testcase>
+
+    <testcase>
+        <name>delete_of_employee_details_failed</name>
+        <category>Delete APIs</category>
+        <run_flag>Y</run_flag>
+        <api>/test/v1/delete?id=$[#SUITE.employee_id]</api>
+        <method>DELETE</method>
+        <body>{}</body>
+        <headers>{"Content-Type": "application/json"}</headers>
+        <expected_status_code>403</expected_status_code>
+        <authentication></authentication>
+        <pre_variables>set $[#SUITE.employee_id]=$[#rand(20,50)]</pre_variables>
+        <post_assertion>compare response.msg to 'Invalid given Employee ID'</post_assertion>
+        <debug_mode>false</debug_mode>
+        <report_misc></report_misc>
+        <TYPE>PYPREST</TYPE>
+    </testcase>
+</testcases>
+
+    
+
+</data>
