@@ -15,3 +15,7 @@
             6.We can also pass the env from config file as well as through cli
 
 **Step 3**: Execute the suite.  
+
+**Link of Suite Report**
+
+https://jewel.gemecosystem.com/#/autolytics/extent-report?s_run_id=GEMECO-API-PY_PROD_4C7E0037-13A1-4DBC-90D7-5735183BA2A9
