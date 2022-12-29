@@ -1,7 +1,7 @@
 <data>
 <suite>
-<bridge_token>374efe42-323e-4445-b89b-1ff750f000c61664541163883</bridge_token>
-<username>tanya.agarwal</username>
+<bridge_token>bridgetoken</bridge_token>
+<username>username</username>
 <project>GEMPYP_TEST</project>
 <report_name>TEST_REGRESSION</report_name>
 <mode>sequence</mode>
