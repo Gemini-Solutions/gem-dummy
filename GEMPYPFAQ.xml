@@ -1,0 +1,249 @@
+<data>
+<suite>
+<bridge_token>374efe42-323e-4445-b89b-1ff750f000c61664541163883</bridge_token>
+<username>tanya.agarwal</username>
+<project>GEMPYP_TEST</project>
+<report_name>TEST_REGRESSION</report_name>
+<mode>sequence</mode>
+<base_url>https://apis-beta.gemecosystem.com/</base_url>
+<env>prod</env>
+</suite>
+<testcases>
+    <testcase>
+            <name>dynamic suite variables in request</name>
+            <category>TEST_SCN_ID_1_5</category>
+            <run_flag>Y</run_flag>
+            <api>https://gorest.co.in/public/v2/$[#SUITE.userInurl]</api>
+            <method>POST</method>
+            <body> 
+            {        
+                "name":$[#suite.user],
+                "email": "JOhn$[#unique]@gmail.biz",
+                "gender": "male",
+                "status": "inactive"
+            }
+            </body>
+            <headers>{"content-type":"application/json","accept":"application/json", "Authorization":"Bearer 7cf300a3954980370df0803705cb1fb157b4dea84eecf0f2d206f41d48c4a8b5"}</headers>
+            <expected_status_code>201</expected_status_code>
+            <pre_variables>set $[#SUITE.user]="users";set $[#unique]=$[#unique(100)];set $[#SUITE.userInurl]=users;</pre_variables>
+            <TYPE>PYPREST</TYPE>
+    </testcase>
+
+    <testcase>
+            <name>keycheck with variables</name>
+            <category>TEST_SCN_ID_2</category>
+            <run_flag>Y</run_flag>
+            <api>https://apis-beta.gemecosystem.com/validate/username?username=tanya.agarwal</api>
+            <method>GET</method>
+            <key_check>keys are response.data,response.data.isPresent,response.message, response.operation</key_check>
+            <debug_mode>false</debug_mode>
+            <type>PYPREST</type>         
+    </testcase>
+
+    <testcase>
+            <name>post variables used in other testcase</name>
+            <category>TEST_SCN_ID_3</category>
+            <run_flag>Y</run_flag>
+            <api>https://apis.gemecosystem.com/login</api>
+            <method>POST</method>
+            <body>{"username":$[#SUITE.user],"password":"49a9ec624e619037416e6f804ff2c5e6"} </body>
+            <headers>{"Content-Type":"application/json"}</headers>
+            <expected_status_code>200</expected_status_code>
+            <pre_variables>set $[#SUITE.user]="tanya.agarwal"</pre_variables>
+            <post_variables>set $[#SUITE.auth]=$[#response.data.token];</post_variables>
+            <post_assertion>compare response.data.username to $[#SUITE.user];</post_assertion>
+            <debug_mode>false</debug_mode>
+            <TYPE>PYPREST</TYPE>
+    </testcase>
+
+    <testcase>
+            <name>Suite variables received from another testcase used in request</name>
+            <category>TEST_SCN_ID_3</category>
+            <run_flag>Y</run_flag>
+            <api>https://apis.gemecosystem.com/rule/action?s_run_id=GEMECO-API-PY_PROD_4BCD3024-417B-455D-8920-D78B0AD48EF6</api>
+            <method>GET</method>
+            <body>{}</body>
+            <headers>{"Authorization": "Bearer $[#SUITE.auth]"}</headers>
+            <expected_status_code>200</expected_status_code>
+            <key_check>keys are response.data,response.operation,response.message</key_check>
+            <post_assertion>compare response.operation to "success";</post_assertion>
+            <debug_mode>false</debug_mode>
+            <TYPE>PYPREST</TYPE>
+    </testcase>
+
+    <testcase>
+            <name>keycheck with list of response</name>
+            <category>Test_SCN_ID_6</category>
+            <run_flag>Y</run_flag>
+            <api>https://gorest.co.in/public/v2/users</api>
+            <method>GET</method>
+            <body>{}</body>
+            <headers>{}</headers>
+            <expected_status_code>200,300,400</expected_status_code>
+            <legacy_api>https://gorest.co.in/public/v2/users</legacy_api>
+            <legacy_method>GET</legacy_method>
+            <legacy_headers>{"accept":"application/json"}</legacy_headers>
+            <legacy_body>{}</legacy_body>
+            <legacy_expected_status_code>200,300</legacy_expected_status_code>
+            <key_check>keys are legacy[0].id, response[0].id</key_check>
+            <TYPE>PYPREST</TYPE>
+    </testcase>
+
+
+    <testcase>
+            <name>suite variables from other testcase in post assertion</name>
+            <category>TEST_SCN_ID_7</category>
+            <run_flag>Y</run_flag>
+            <api>https://restcountries.com/v3.1/lang/german</api>
+            <method>GET</method>
+            <body>{}</body>
+            <headers>{}</headers>
+            <expected_status_code>200</expected_status_code>
+            <post_assertion>compare response[0].name.common not to $[#SUITE.auth]</post_assertion>
+            <TYPE>PYPREST</TYPE>
+    </testcase>
+
+    <testcase>
+            <name>Legacy- keycheck with list of response</name>
+            <category>Legacy API Features</category>
+            <run_flag>Y</run_flag>
+            <api>https://gorest.co.in/public/v2/users</api>
+            <method>GET</method>
+            <expected_status_code>200,300,400</expected_status_code>
+            <pre_variables>set $[#SUITE.varpost]=posts;set $[#epochmilli]=$[#epoch(milli)]; set $[#SUITE.user] = users; set $[#SUITE.var1] = VAR_1</pre_variables>
+            <legacy_api>https://gorest.co.in/public/v2/users</legacy_api>
+            <legacy_method>GET</legacy_method>
+            <legacy_headers>{"accept":"application/json"}</legacy_headers>
+            <legacy_body>{}</legacy_body>
+            <legacy_expected_status_code>200,300</legacy_expected_status_code>
+            <key_check>keys are legacy[0].id, response[0].id</key_check>
+            <TYPE>PYPREST</TYPE>
+    </testcase>
+
+    <testcase>
+            <name>After file</name>
+            <category>POST API</category>
+            <run_flag>Y</run_flag>
+            <api>https://restcountries.com/v3.1/lang/german</api>
+            <method>GET</method>
+            <headers>{"content-type":"application/json","accept":"application/json", "Authorization":"Bearer 7cf300a3954980370df0803705cb1fb157b4dea84eecf0f2d206f41d48c4a8b5"}</headers>
+            <expected_status_code>200,201</expected_status_code>
+            <after_file>path=BeforeSampleFile.py,class=beforeAfter,method=after_response_code</after_file>
+            <type>PYPREST</type>
+
+</testcase>
+<testcase>
+            <name>Before File</name>
+            <category>POST API</category>
+            <run_flag>Y</run_flag>
+            <api>https://apis-beta.gemecosystem.com/company</api>
+            <method>GET</method>
+            <dependency>After File</dependency>
+            <body>""</body>
+            <headers>""</headers>
+            <expected_status_code>200,201</expected_status_code>
+            <pre_variables>set $[#SUITE.method]=before_apiMethodBodyHeaders;</pre_variables>
+            <before_file>path=BeforeSampleFile.py,class=beforeAfter,method=$[#SUITE.method]</before_file>
+            <post_assertion>compare response.gender to "male";</post_assertion>
+            <type>PYPREST</type>
+
+</testcase>
+
+<testcase>
+            <name>Subtestcases</name>
+            <category>subtestcases</category>
+            <run_flag>Y</run_flag>
+            <api>https://restcountries.com/v3.1/lang/german</api>
+            <method>""</method>
+            <before_file>path=BeforeSampleFile.py,class=beforeAfter,method=before_method</before_file>
+            <subtestcases>Before File</subtestcases>
+            <TYPE>PYPREST</TYPE>
+
+</testcase>
+
+<testcase>
+            <name>Legacy- Suite variables in request</name>
+            <category>Legacy API Features</category>
+            <run_flag>Y</run_flag>
+            <api>https://gorest.co.in/public/v2/users/$[#SUITE.curr_id]</api>
+            <method>PUT</method>
+            <body>{
+                "name": "user $[#curr_name_uid]",
+                "status": "active"
+            }</body>
+            <headers>{
+                "Accept": "application/json",
+                "Content-Type":"application/json",
+                "Authorization": "Bearer 7cf300a3954980370df0803705cb1fb157b4dea84eecf0f2d206f41d48c4a8b5"    
+                }</headers>
+            <expected_status_code>200,300</expected_status_code>
+            <pre_variables>set $[#curr_name_uid]=$[#uuid()];set $[#legacy_name_uid]=$[#uuid()];</pre_variables>
+            <legacy_api>https://gorest.co.in/public/v2/users/$[#SUITE.legacy_id]</legacy_api>
+            <legacy_method>PUT</legacy_method>
+            <legacy_headers>{
+                "Accept": "application/json",
+                "Content-Type":"application/json",
+                "Authorization": "Bearer 7cf300a3954980370df0803705cb1fb157b4dea84eecf0f2d206f41d48c4a8b5"    
+                }</legacy_headers>
+            <legacy_body>{
+                "name": "User $[#legacy_name_uid]",
+                "status": "active"
+            }</legacy_body>
+            <legacy_expected_status_code>200,300</legacy_expected_status_code>
+            <TYPE>PYPREST</TYPE>
+</testcase>
+
+<testcase>
+            <name>Legacy- keycheck with variables</name>
+            <category>Legacy API Features</category>
+            <run_flag>Y</run_flag>
+            <api>https://apis-beta.gemecosystem.com/suiteexe?s_run_id=GEMECO-API-PY_Beta_e43c87d7-dbe4-4e68-8566-e11a77e9efc6</api>
+            <method>GET</method>
+            <pre_variables>set $[#l_data]=legacy.data;set $[#l_data_sid]=legacy.data.s_id;set $[#SUITE.varpost]=posts;set $[#epochmilli]=$[#epoch(milli)]; set $[#SUITE.user] = users; set $[#SUITE.var1] = VAR_1</pre_variables>
+            <legacy_api>https://apis.gemecosystem.com/suiteexe?s_run_id=GEMECO-API-PY_Prod_f1a22b10-f30f-420a-96e1-be89678bea70</legacy_api>
+            <legacy_method>GET</legacy_method>
+            <legacy_headers>{"accept":"application/json"}</legacy_headers>
+            <key_check>keys are $[#l_data],$[#l_data_sid],legacy.data.s_id,data.s_id, message, data</key_check>
+            <TYPE>PYPREST</TYPE>
+
+</testcase>
+
+<testcase>
+            <name>Legacy- postassertion with values- to</name>
+            <category>Legacy API Features</category>
+            <run_flag>Y</run_flag>
+            <api>https://apis-beta.gemecosystem.com/suiteexe?s_run_id=GEMECO-API-PY_Beta_e43c87d7-dbe4-4e68-8566-e11a77e9efc6</api>
+            <method>GET</method>
+            <expected_status_code>200,300,400</expected_status_code>
+            <pre_variables>set $[#SUITE.varpost]=posts;set $[#epochmilli]=$[#epoch(milli)]; set $[#SUITE.user] = users; set $[#SUITE.var1] = VAR_1</pre_variables>
+            <legacy_api>https://apis.gemecosystem.com/suiteexe?s_run_id=GEMECO-API-PY_Prod_f1a22b10-f30f-420a-96e1-be89678bea70</legacy_api>
+            <legacy_method>GET</legacy_method>
+            <legacy_headers>{"accept":"application/json"}</legacy_headers>
+            <legacy_body>{}</legacy_body>
+            <legacy_expected_status_code>200,300</legacy_expected_status_code>
+            <key_check>keys are legacy.data, legacy.data.s_id</key_check>
+            <post_assertion>compare data.s_id to "test_id";compare legacy.data.s_id to "test_id";</post_assertion>
+            <TYPE>PYPREST</TYPE>
+</testcase>
+
+    
+<testcase>
+            <name>Legacy- postassertion between keys</name>
+            <category>Legacy API Features</category>
+            <run_flag>Y</run_flag>
+            <api>https://gorest.co.in/public/v2/users</api>
+            <method>GET</method>
+            <expected_status_code>200,300,400</expected_status_code>
+            <legacy_api>https://gorest.co.in/public/v2/users</legacy_api>
+            <legacy_method>GET</legacy_method>
+            <legacy_headers>{"accept":"application/json"}</legacy_headers>
+            <legacy_body>{}</legacy_body>
+            <legacy_expected_status_code>200,300</legacy_expected_status_code>
+            <post_assertion>compare legacy[0].id to response[0].id;</post_assertion>
+            <TYPE>PYPREST</TYPE>
+</testcase>
+    
+
+    
+</testcases>
+</data>
