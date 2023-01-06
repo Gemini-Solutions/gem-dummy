@@ -19,8 +19,8 @@
         <method>POST</method>
         <body>{
             "employee_id":"10",
-            "employee_name":"tanya",
-            "company":"gemini",
+            "employee_name":"user",
+            "company":"company",
             "experience": 10}
         </body>
         <headers>{"Content-Type": "application/json"}</headers>
@@ -42,8 +42,8 @@
         <method>POST</method>
         <body>{
             "employee_id":"",
-            "employee_name":"tanya",
-            "company":"gemini",
+            "employee_name":"user",
+            "company":"company",
             "experience":20}
         </body>
         <headers>{"Content-Type": "application/json"}</headers>
